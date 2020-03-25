@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\SignupRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -13,7 +16,27 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        parent::__construct();
+        $this->middleware('auth:api', ['except' => ['login', 'signup']]);
+    }
+
+    /**
+     * Signup new user.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function signup(SignupRequest $request)
+    {
+        $user = new User([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+        $user->save();
+
+        $token = auth()->login($user);
+        return $this->respondWithToken($token);
     }
 
     /**
@@ -21,7 +44,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(LoginRequest $request)
     {
         $credentials = request(['email', 'password']);
 

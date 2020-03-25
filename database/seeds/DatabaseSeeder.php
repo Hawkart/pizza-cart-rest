@@ -37,6 +37,37 @@ class DatabaseSeeder extends Seeder
                 'description' => 'Our best seller! Combination of meats and fresh vegetables.',
                 'price' => 735,
                 "image" => 'NYF.jpg'
+            ],
+
+            [
+                'title' => 'Hawaiian (Big)',
+                'description' => 'Our take on the classic Hawaiian Pizza: ham, pineapple and bacon bits',
+                'price' => 805,
+                "image" =>'hawaiian.jpg'
+            ],
+            [
+                'title' => 'New York Classic (Big)',
+                'description' => 'All time favorite topping: Pepperoni!',
+                'price' => 815,
+                "image" => 'NYClassic.jpg'
+            ],
+            [
+                'title' => '#4 Cheese (Big)',
+                'description' => 'Cheese heaven! Mozzarella, cheddar, romano and feta.',
+                'price' => 920,
+                "image" => '4cheese.jpg'
+            ],
+            [
+                'title' => 'Roasted Garlic & Shrimp (Big)',
+                'description' => 'Gourmet style pizza with shrimp, onions, roasted garlic in wine-butter sauce .',
+                'price' => 1150,
+                "image" => '1578533750_thumb.jpg'
+            ],
+            [
+                'title' => 'New York`s Finest (Big)',
+                'description' => 'Our best seller! Combination of meats and fresh vegetables.',
+                'price' => 1435,
+                "image" => 'NYF.jpg'
             ]
         ],
         'Pasta' => [
@@ -76,7 +107,6 @@ class DatabaseSeeder extends Seeder
             {
                 $product['category_id'] = $category->id;
                 factory(Product::class)->create($product);
-                //storage/images/
             }
         }
     }

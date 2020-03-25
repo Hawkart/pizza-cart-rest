@@ -20,7 +20,6 @@ class CreateProductsTable extends Migration
             $table->string('slug');
             $table->string('image');
             $table->string('description');
-            $table->integer('in_stock');
             $table->integer('price');
             $table->string('currency')->default(config("currency.default"));
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');

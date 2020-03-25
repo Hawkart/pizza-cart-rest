@@ -14,10 +14,10 @@ class CreateCartsTable extends Migration
     public function up()
     {
         Schema::create('carts', function (Blueprint $table) {
-            $table->id();
-            $table->string('key');
-            $table->bigInteger('user_id')->unsigned()->nullable();
-            $table->nullableTimestamps();
+            $table->string('id');
+            $table->bigInteger('order_id')->unsigned()->nullable();
+            $table->timestamps();
+            $table->primary('id');
         });
     }
 
