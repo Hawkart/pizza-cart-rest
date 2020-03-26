@@ -4,17 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Cart extends Model
+class OrderItem extends Model
 {
-    public $incrementing = false;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'order_id'
+        'order_id',
+        'product_id',
+        'quantity',
+        'price'
     ];
 
     /**
@@ -25,9 +26,9 @@ class Cart extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function items() {
-        return $this->hasMany(CartItem::class);
+    public function product() {
+        return $this->belongsTo(Product::class);
     }
 }

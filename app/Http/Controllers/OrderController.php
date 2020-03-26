@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Acme\Helpers\MoneyHelper;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 
@@ -18,7 +19,9 @@ class OrderController extends Controller
 
         $orders = Order::where('email', $user->email)
                         ->orWhere('user_id', $user->id)
-                        ->with(['items', 'items.product'])->get();
+                        ->with(['items', 'items.product'])
+                        ->orderByDesc("id")
+                        ->get();
 
         return OrderResource::collection($orders);
     }

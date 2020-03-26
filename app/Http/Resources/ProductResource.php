@@ -24,10 +24,9 @@ class ProductResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             'image' => asset("storage/images/". $this->image),
-            'in_stock' => (int) $this->in_stock,
-            'price' => round($this->price, 2),
+            'price' => MoneyHelper::convertCentsToDollar($this->price),
             'currency' => $currency,
-            'price_format' => currency($this->price, $currency, $currency),
+            'price_format' => MoneyHelper::convertCentsToDollarWithCurrency($this->price, $currency, $currency),
 
             'category' => new CategoryResource($this->whenLoaded('category'))
         ];

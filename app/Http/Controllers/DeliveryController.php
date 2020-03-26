@@ -30,13 +30,13 @@ class DeliveryController extends Controller
     {
         $currency = $this->currency;
         $cart = new Cart($request, $currency);
+        $cart->setInCents(true);
         $delivery = DeliveryFactory::factory($id);
         $price = $delivery->calculate($cart);
-        $price = MoneyHelper::convertCentsToDollar($price);
 
         return response()->json([
-            "price" => $price,
-            "price_format" => currency($price, config('currency.default'), $currency)
+            "price" =>  MoneyHelper::convertCentsToDollarWithCurrency($price, config('currency.default'), $currency, false),
+            "price_format" => MoneyHelper::convertCentsToDollarWithCurrency($price, config('currency.default'), $currency)
         ], 200);
     }
 }

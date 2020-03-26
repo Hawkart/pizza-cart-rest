@@ -96,6 +96,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
 
         \Artisan::call('currency:manage add usd,eur', []);
+        \Artisan::call('currency:update -o', []);
 
         foreach($this->categories as $categoryTitle => $products)
         {

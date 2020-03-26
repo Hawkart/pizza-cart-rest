@@ -2,6 +2,7 @@
 
 namespace App\Acme;
 
+use App\Acme\Helpers\MoneyHelper;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -10,6 +11,7 @@ class Cart
     protected $currency;
     protected $request;
     protected $parsedItems;
+    protected $in_cents = false;
 
     /**
      * Cart constructor.
@@ -60,6 +62,14 @@ class Cart
     }
 
     /**
+     * @param bool $in_cents
+     */
+    public function setInCents(bool $in_cents)
+    {
+        $this->in_cents = $in_cents;
+    }
+
+    /**
      * @return array
      */
     public function getContent()
@@ -75,8 +85,20 @@ class Cart
 
             if(count($products)>0) {
                 foreach($products as $product) {
+
+                    $price = $product->price;
                     $quantity = intval($arItems[$product->id]);
-                    $sum = $quantity*$product->price;
+
+                    if(!$this->in_cents) {
+                        $price = MoneyHelper::convertCentsToDollar($price);
+                    }else{
+                        $price = round($price);
+                    }
+
+                    $sum = $quantity*$price;
+                    $sum_format =  currency($sum, $currency, $currency);
+                    $price_format = currency($price, $currency, $currency);
+
                     $total += $sum;
 
                     $cartItems[] = [
@@ -85,10 +107,10 @@ class Cart
                         'image' => asset("storage/images/". $product->image),
                         'description' => $product->description,
                         'quantity' => $quantity,
-                        'price' => round($product->price, 2),
-                        'price_format' => currency($product->price, $currency, $currency),
-                        'sum' => round($sum, 2),
-                        'sum_format' => currency($sum, $currency, $currency)
+                        'price' => $price,
+                        'price_format' => $price_format,
+                        'sum' => $sum,
+                        'sum_format' => $sum_format
                     ];
                 }
             }
@@ -96,7 +118,7 @@ class Cart
 
         return [
             'items' => $cartItems,
-            'total' => round($total, 2),
+            'total' => $total,
             "total_format" => currency($total, $currency, $currency),
         ];
     }
@@ -106,7 +128,7 @@ class Cart
      */
     public function total()
     {
-        return round($this->getContent()["total"], 2);
+        return $this->getContent()["total"];
     }
 
     /**

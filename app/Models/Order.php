@@ -32,9 +32,9 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function cart() {
-        return $this->hasOne(Cart::class);
+    public function items() {
+        return $this->hasMany(OrderItem::class);
     }
 }

@@ -27,9 +27,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 Route::apiResource('categories', 'CategoryController')->only(["index", 'show']);
 Route::apiResource('products', 'ProductController')->only(["index", 'show']);
-Route::apiResource('carts', 'CartController')->except(['update', 'index']);
-Route::apiResource('orders', 'OrderController')->except(['update', 'destroy','store'])->middleware('auth:api');
-
+Route::apiResource('orders', 'OrderController')->only(['index'])->middleware('auth:api');
 
 Route::get("deliveries", "DeliveryController@index");
 Route::post("deliveries/{delivery_id}/calculate", "DeliveryController@calculate");

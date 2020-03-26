@@ -35,7 +35,6 @@ class Product extends Model
         'slug',
         'image',
         'description',
-        'in_stock',
         'price',
         'currency'
     ];
@@ -47,8 +46,7 @@ class Product extends Model
     public function getPriceAttribute($val)
     {
         $currency = MoneyHelper::getCurrentCurrency();
-        $val = MoneyHelper::convertCentsToDollar($val);
-        return currency($val, $this->currency,  $currency, false);
+        return round(currency($val, $this->currency,  $currency, false), 2);
     }
 
     /**

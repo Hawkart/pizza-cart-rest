@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\DeliveryType;
+use App\Enums\PaymentType;
+use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
@@ -27,17 +30,18 @@ class CartCheckoutRequest extends FormRequest {
             'items.*.id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|numeric|min:1',
             'name' => 'required|string|min:3',
-            'address' => 'required|string|min:10',  //Todo: required if delivery
+            'address' => 'required_if:delivery,==,'.DeliveryType::Delivery.'|nullable|string',
             'email' => 'required|email',
             'phone' => 'required|string|min:8',
-            'delivery' => 'required|numeric|min:1',
-            'payment' => 'required|numeric|min:1',
+            'delivery' => 'required|numeric|'.new EnumValue(DeliveryType::class),
+            'payment' => 'required|numeric|'.new EnumValue(PaymentType::class),
         ];
     }
 
     public function messages()
     {
         return [
+            "address.required_if" => "The address field is required when delivery has chosen"
         ];
     }
 }

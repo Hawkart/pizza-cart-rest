@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('phone');
-            $table->text('address');
+            $table->text('address')->nullable();
             $table->tinyInteger('delivery');
             $table->integer('delivery_price');
             $table->tinyInteger('payment');

@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Acme\Helpers\MoneyHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CartItemResource extends JsonResource
+class OrderItemResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +17,11 @@ class CartItemResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'cart_id' => $this->cart_id,
+            'order_id' => $this->order_id,
             'product_id' => $this->product_id,
             'quantity' => $this->quantity,
-            'price' => $this->price,
-
-            'cart' => new CartResource($this->whenLoaded('cart')),
+            'price' => MoneyHelper::convertCentsToDollar($this->price),
+            'order' => new OrderResource($this->whenLoaded('order')),
             'product' => new ProductResource($this->whenLoaded('product'))
         ];
     }

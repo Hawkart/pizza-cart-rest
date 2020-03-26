@@ -2,8 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Acme\Helpers\MoneyHelper;
 use App\Enums\DeliveryType;
 use App\Enums\PaymentType;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class OrderResource extends JsonResource
@@ -24,13 +26,17 @@ class OrderResource extends JsonResource
             'phone' => $this->phone,
             'address' => $this->address,
             'delivery' => DeliveryType::getInstance($this->delivery),
-            'delivery_price' => $this->delivery_price,
             'payment' => PaymentType::getInstance($this->payment),
-            'total_price' => $this->total_price,
             'currency' => $this->currency,
+            'delivery_price' => MoneyHelper::convertCentsToDollar($this->delivery_price),
+            'total_price' => MoneyHelper::convertCentsToDollar($this->total_price),
+            'delivery_price_format' => MoneyHelper::convertCentsToDollarWithCurrency($this->delivery_price, $this->currency, $this->currency),
+            'total_price_format' => MoneyHelper::convertCentsToDollarWithCurrency($this->total_price, $this->currency, $this->currency),
+
+            'created_at' => Carbon::parse($this->created_at)->format("d.m.Y"),
 
             'user' => new UserResource($this->whenLoaded('user')),
-            'cart' => new OrderResource($this->whenLoaded('cart')),
+            'items' => OrderItemResource::collection($this->whenLoaded('items'))
         ];
     }
 }
