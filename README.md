@@ -18,3 +18,4 @@
 - `git add .`
 - `git commit -m “Your Commit”`
 - `git push heroku master`
+- `heroku run php artisan migrate`
